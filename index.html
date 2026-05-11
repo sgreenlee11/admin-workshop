@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Admin Workshop: Roadmap Concierge Copilot Studio walkthrough">
+  <title>Admin Workshop | Roadmap Concierge Walkthrough</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ffb000'/%3E%3Cpath d='M14 42 25 15h8l11 27h-7l-2-6H23l-2 6h-7Zm11-12h8l-4-11-4 11Zm25 12h-7V15h7v27Z' fill='%2313233b'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to walkthrough</a>
+
+  <header class="hero">
+    <nav class="topbar" aria-label="Workshop navigation">
+      <a class="brand" href="./" aria-label="Admin Workshop home">
+        <span class="brand-mark" aria-hidden="true">AW</span>
+        <span>Admin Workshop</span>
+      </a>
+      <div class="nav-links">
+        <a href="#setup">Setup</a>
+        <a href="#build">Build</a>
+        <a href="#validate">Validate</a>
+        <a href="#use">Use</a>
+      </div>
+    </nav>
+
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Copilot Studio + MCP + Work IQ Copilot</p>
+        <h1>Build the Roadmap Concierge agent</h1>
+        <p class="lede">
+          Create an IT change-readiness agent that joins public Microsoft release data,
+          live tenant facts, and recent work context into one grounded conversation.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#build">Start the walkthrough</a>
+          <a class="button secondary" href="copilot-page.md">Copilot Page version</a>
+        </div>
+      </div>
+
+      <aside class="signal-card" aria-label="Workshop summary">
+        <div class="signal-row">
+          <span>Audience</span>
+          <strong>IT admins and change leads</strong>
+        </div>
+        <div class="signal-row">
+          <span>Build path</span>
+          <strong>Copilot Studio, low-code</strong>
+        </div>
+        <div class="signal-row">
+          <span>Expected time</span>
+          <strong>45-60 minutes</strong>
+        </div>
+        <div class="signal-row">
+          <span>Surfaces</span>
+          <strong>M365 Copilot Chat, Teams</strong>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section scenario" aria-labelledby="scenario-title">
+      <div class="section-kicker">Scenario</div>
+      <h2 id="scenario-title">You are preparing your tenant for Microsoft 365 and Azure change.</h2>
+      <p>
+        Your leadership team wants more than a list of upcoming features. They need to know
+        what is changing, whether the tenant is ready, who is already discussing blockers,
+        and what message should go to stakeholders. Roadmap Concierge helps answer those
+        questions without building a library of scripted topics.
+      </p>
+
+      <div class="architecture" aria-label="Roadmap Concierge architecture">
+        <div class="node surface">M365 Copilot Chat<br><span>and Teams</span></div>
+        <div class="line"></div>
+        <div class="node studio">Copilot Studio<br><span>Roadmap Concierge</span></div>
+        <div class="source-grid">
+          <div class="node source">MRC MCP<br><span>Roadmap + Azure Updates</span></div>
+          <div class="node source">Enterprise MCP<br><span>Microsoft Graph, read-only</span></div>
+          <div class="node source">Work IQ Copilot<br><span>Mail, meetings, Teams context</span></div>
+          <div class="node source">SharePoint<br><span>Optional runbooks</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="setup" class="section" aria-labelledby="setup-title">
+      <div class="section-kicker">Before you start</div>
+      <h2 id="setup-title">Prerequisites</h2>
+      <p>Confirm these items before opening Copilot Studio.</p>
+
+      <div class="cards">
+        <article class="card">
+          <h3>Copilot Studio environment</h3>
+          <p>Use a Developer or Sandbox environment. Avoid the default environment if DLP policies block custom connectors or MCP tools.</p>
+        </article>
+        <article class="card">
+          <h3>Enterprise MCP setup</h3>
+          <p>Complete the Copilot Studio-specific setup in <em>Use Microsoft MCP Server for Enterprise from Copilot Studio</em>.</p>
+        </article>
+        <article class="card">
+          <h3>Admin and app registration</h3>
+          <p>You need Cloud Application Administrator or equivalent access, a confidential client app registration, and the required MCP API permissions consented.</p>
+        </article>
+        <article class="card">
+          <h3>Work IQ Copilot</h3>
+          <p>Confirm Microsoft 365 Copilot licensing and that the Work IQ Copilot MCP server is allowed for your tenant.</p>
+        </article>
+        <article class="card optional">
+          <h3>Optional runbooks</h3>
+          <p>Have a SharePoint site with rollout checklists, service-owner notes, or change-management runbooks if you want internal citations.</p>
+        </article>
+        <article class="card">
+          <h3>Test identities</h3>
+          <p>Use at least two users with different roles and different recent mail/calendar/Teams activity to show permission-bounded answers.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="build" class="section" aria-labelledby="build-title">
+      <div class="section-kicker">Hands-on build</div>
+      <h2 id="build-title">Create and configure the agent</h2>
+
+      <ol class="walkthrough-list">
+        <li class="step">
+          <h3>Create the agent shell</h3>
+          <ol>
+            <li>Go to <a href="https://copilotstudio.microsoft.com/" target="_blank" rel="noreferrer">copilotstudio.microsoft.com</a>.</li>
+            <li>Select your Developer or Sandbox environment.</li>
+            <li>Select <strong>Create</strong> &gt; <strong>New agent</strong>.</li>
+            <li>Enter the agent name <strong>Roadmap Concierge</strong>, then select <strong>Create</strong>.</li>
+            <li>After the agent loads, set the description and model.</li>
+          </ol>
+
+          <div class="field-grid" role="table" aria-label="Agent shell settings">
+            <div role="row"><span role="cell">Description</span><strong role="cell">Your IT-pro briefing agent - fuses Microsoft Roadmap and Azure Updates with live tenant data and Work IQ context.</strong></div>
+            <div role="row"><span role="cell">Model</span><strong role="cell">GPT-5.5 Instant</strong></div>
+          </div>
+
+          <p class="note">GPT-5.5 Instant is experimental and might not be enabled by your administrator. If it is unavailable, choose the closest GPT-5.5 model your environment allows.</p>
+        </li>
+
+        <li class="step">
+          <h3>Add the agent instructions</h3>
+          <p>Paste this into the <strong>Instructions</strong> field.</p>
+          <div class="prompt-block">
+            <button class="copy-button" data-copy-target="instructions">Copy instructions</button>
+            <pre id="instructions"><code>You are Roadmap Concierge, an IT-pro agent for Microsoft 365 and Azure
+change readiness. You run on GPT-5.5 Instant, so optimize for fast,
+concise, grounded answers.
+
+Audience: Microsoft 365 admins, change managers, service owners, and
+engineering leads. Assume technical fluency. Do not explain basic admin
+concepts unless asked.
+
+CORE BEHAVIOR
+
+1. Answer with evidence
+   - Use available tools and knowledge whenever the user asks about
+     current releases, tenant state, internal content, or recent work
+     context.
+   - Do not answer from general knowledge when a grounded source is
+     needed.
+   - If a lookup returns no results, say that clearly. Do not invent
+     Roadmap IDs, dates, tenant counts, policies, owners, or decisions.
+
+2. Keep source boundaries clear
+   - Separate public release information, live tenant facts, internal
+     knowledge, and personal/work-context signals.
+   - Treat tenant data as authoritative for tenant-readiness questions.
+   - Treat work-context signals as helpful context, not tenant-wide
+     inventory or compliance evidence.
+   - When sources disagree or are incomplete, explain the gap instead
+     of forcing a conclusion.
+
+3. Synthesize readiness
+   - For "are we ready", "what should we do", or "who needs to know"
+     questions, combine the relevant evidence into:
+       * What is changing
+       * Who or what appears affected
+       * Current readiness signals
+       * Risks, blockers, or unknowns
+       * Recommended next actions
+   - Keep recommendations practical and specific.
+
+4. Cite and attribute
+   - Include Microsoft 365 Roadmap IDs or Azure Updates IDs when
+     discussing specific release items.
+   - Cite internal knowledge sources when available.
+   - Label work-context findings as recent mail, meeting, or Teams
+     context when used.
+
+5. Draft useful communications
+   - When asked to draft a leadership update, IT bulletin, Teams post,
+     or change notice, produce a complete send-ready draft.
+   - Ground the draft in retrieved evidence. Include dates, IDs,
+     affected groups, owners, and open risks when known.
+   - Avoid placeholder language unless the underlying fact is unknown;
+     in that case, mark it as a decision or data gap.
+
+6. Handle permissions and safety
+   - Respect the signed-in user's permissions and roles.
+   - Do not reveal tenant, mailbox, meeting, Teams, or document content
+     beyond what the user is allowed to access.
+   - Summarize sensitive work-context content instead of quoting it
+     unless a quote is necessary and appropriate.
+   - If asked to make a change and no approved write capability is
+     available, say you cannot make the change directly and offer a
+     draft request, checklist, or implementation plan.
+
+STYLE
+
+- Lead with the answer, then the key evidence.
+- Be direct, technical, and concise.
+- Use short bullets or a compact table when comparing items.
+- Ask a clarifying question only when the missing detail changes which
+  source to use or what action to recommend.
+- Do not describe your tools or internal process.</code></pre>
+          </div>
+        </li>
+
+        <li class="step">
+          <h3>Add the Microsoft Release Communications MCP server</h3>
+          <ol>
+            <li>Go to <strong>Tools</strong> &gt; <strong>Add a tool</strong> &gt; <strong>Model Context Protocol</strong>.</li>
+            <li>Use these values.</li>
+          </ol>
+          <div class="field-grid" role="table" aria-label="MRC MCP settings">
+            <div role="row"><span role="cell">Server name</span><strong role="cell">MRC-MCP-Server</strong></div>
+            <div role="row"><span role="cell">Server URL</span><strong role="cell">https://www.microsoft.com/releasecommunications/mcp</strong></div>
+            <div role="row"><span role="cell">Authentication</span><strong role="cell">None</strong></div>
+          </div>
+          <p class="note">This public MCP server adds Microsoft 365 Roadmap and Azure Updates tools.</p>
+        </li>
+
+        <li class="step">
+          <h3>Add the Microsoft MCP Server for Enterprise</h3>
+          <p>This server provides read-only Microsoft Graph access through the signed-in user's permissions.</p>
+          <ol>
+            <li>In Copilot Studio, add a new MCP tool.</li>
+            <li>Set the server URL to <code>https://mcp.svc.cloud.microsoft/enterprise</code>.</li>
+            <li>Choose <strong>OAuth 2.0</strong> &gt; <strong>Manual</strong>.</li>
+            <li>Copy the redirect URL from Copilot Studio and add it to your Entra app registration as a Web redirect URI.</li>
+            <li>In Power Apps, edit the custom connector security settings and enable service-principal support with managed identity.</li>
+            <li>Create the matching federated credential on the app registration.</li>
+            <li>Create and test the connection, then return to Copilot Studio and select <strong>Add and configure</strong>.</li>
+          </ol>
+          <p class="note">If the connector test fails after adding federated credentials, verify the issuer, subject, and credential name match the connector values exactly.</p>
+        </li>
+
+        <li class="step">
+          <h3>Add Work IQ Copilot</h3>
+          <ol>
+            <li>Go to <strong>Tools</strong> &gt; <strong>Add a tool</strong> &gt; <strong>Model Context Protocol</strong>.</li>
+            <li>Search for <strong>Work IQ Copilot</strong>.</li>
+            <li>Select the Work IQ Copilot MCP server.</li>
+            <li>Create a new connection and sign in with your demo user.</li>
+            <li>Run one work-context prompt in the test pane and select <strong>Allow</strong> if prompted.</li>
+          </ol>
+          <p class="note">Seed the demo user with relevant emails, Teams posts, and meetings before testing so Work IQ Copilot has realistic context.</p>
+        </li>
+
+        <li class="step">
+          <h3>Optional: add SharePoint runbooks</h3>
+          <ol>
+            <li>Go to <strong>Knowledge</strong> &gt; <strong>Add knowledge</strong> &gt; <strong>SharePoint</strong>.</li>
+            <li>Paste the runbook library URL, such as <code>https://&lt;tenant&gt;.sharepoint.com/sites/itops/runbooks</code>.</li>
+            <li>Wait for indexing and enable citations.</li>
+          </ol>
+        </li>
+
+        <li class="step">
+          <h3>Keep topics minimal</h3>
+          <p>Leave only the system <strong>Greeting</strong> topic enabled. Let generative orchestration choose the right tools and knowledge sources.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="validate" class="section" aria-labelledby="validate-title">
+      <div class="section-kicker">Validation</div>
+      <h2 id="validate-title">Test the agent in Copilot Studio</h2>
+      <p>Run these prompts in the test pane. Watch the Activity map to confirm the orchestrator selects the right source.</p>
+
+      <div class="test-grid">
+        <article class="test-card">
+          <span>Roadmap only</span>
+          <button class="copy-button small" data-copy-text="What Microsoft Teams features are releasing in the next 30 days?">Copy</button>
+          <p>What Microsoft Teams features are releasing in the next 30 days?</p>
+          <small>Expect Roadmap items, release timing, and IDs.</small>
+        </article>
+        <article class="test-card">
+          <span>Specific item</span>
+          <button class="copy-button small" data-copy-text="What's the status of Roadmap feature ID 526798?">Copy</button>
+          <p>What's the status of Roadmap feature ID 526798?</p>
+          <small>Expect one detailed item or a clear not-found answer.</small>
+        </article>
+        <article class="test-card">
+          <span>Tenant facts</span>
+          <button class="copy-button small" data-copy-text="How many users in my tenant have a Copilot license?">Copy</button>
+          <p>How many users in my tenant have a Copilot license?</p>
+          <small>Expect Enterprise MCP and live Graph counts.</small>
+        </article>
+        <article class="test-card">
+          <span>Work context</span>
+          <button class="copy-button small" data-copy-text="What recent emails or Teams conversations mention Teams rollout blockers?">Copy</button>
+          <p>What recent emails or Teams conversations mention Teams rollout blockers?</p>
+          <small>Expect Work IQ Copilot and permission-bounded context.</small>
+        </article>
+        <article class="test-card">
+          <span>Joined reasoning</span>
+          <button class="copy-button small" data-copy-text="Are any of those upcoming Teams features in preview already inside our tenant, and have people been discussing them recently?">Copy</button>
+          <p>Are any of those upcoming Teams features in preview already inside our tenant, and have people been discussing them recently?</p>
+          <small>Expect release data, tenant facts, and work-context signals separated.</small>
+        </article>
+        <article class="test-card">
+          <span>Retirements</span>
+          <button class="copy-button small" data-copy-text="Which Azure services are retiring this quarter? Anything we depend on?">Copy</button>
+          <p>Which Azure services are retiring this quarter? Anything we depend on?</p>
+          <small>Expect Azure Updates retirement data and optional runbook citations.</small>
+        </article>
+        <article class="test-card">
+          <span>Stakeholders</span>
+          <button class="copy-button small" data-copy-text="Who should be included in a readiness follow-up based on recent mail, meetings, and Teams context?">Copy</button>
+          <p>Who should be included in a readiness follow-up based on recent mail, meetings, and Teams context?</p>
+          <small>Expect suggested stakeholders with reasoning from accessible context.</small>
+        </article>
+        <article class="test-card">
+          <span>Communication draft</span>
+          <button class="copy-button small" data-copy-text="Draft a leadership update covering the top three Teams changes and any internal concerns from recent work context.">Copy</button>
+          <p>Draft a leadership update covering the top three Teams changes and any internal concerns from recent work context.</p>
+          <small>Expect a send-ready update grounded in retrieved evidence.</small>
+        </article>
+      </div>
+    </section>
+
+    <section id="use" class="section" aria-labelledby="use-title">
+      <div class="section-kicker">Use and publish</div>
+      <h2 id="use-title">Publish the agent and use it with your IT team</h2>
+      <ol class="compact-list">
+        <li>Open <strong>Channels</strong> and turn on <strong>Microsoft 365 Copilot</strong>.</li>
+        <li>Turn on <strong>Microsoft Teams</strong> if the agent should be available there.</li>
+        <li>Submit for tenant admin approval.</li>
+        <li>After approval, install the agent from <strong>Copilot Chat</strong> &gt; <strong>Agents</strong> or from Teams.</li>
+      </ol>
+
+      <div class="outcome-panel">
+        <h3>What good looks like</h3>
+        <ul>
+          <li>At least four orchestration paths: Roadmap-only, tenant-only, Work IQ-only, and joined.</li>
+          <li>Roadmap and Azure Update IDs appear when specific release items are discussed.</li>
+          <li>Work IQ findings are labeled as work-context signals, not tenant-wide facts.</li>
+          <li>Internal runbook citations appear when SharePoint knowledge is connected.</li>
+          <li>Drafted communications are complete enough to send after human review.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="troubleshooting-title">
+      <div class="section-kicker">Troubleshooting</div>
+      <h2 id="troubleshooting-title">Common issues</h2>
+      <div class="trouble-list">
+        <details>
+          <summary>Custom connector creation is blocked</summary>
+          <p>Use a Developer or Sandbox environment. The default environment often has DLP policies that block custom connectors.</p>
+        </details>
+        <details>
+          <summary>Graph queries return 403 Forbidden</summary>
+          <p>Confirm the signed-in user has the required Entra role. If role changes were recent, delete and recreate the connection.</p>
+        </details>
+        <details>
+          <summary>Federated credential connection fails</summary>
+          <p>Verify issuer, subject, and credential name exactly match the values shown by the managed identity connector setup.</p>
+        </details>
+        <details>
+          <summary>Roadmap or Azure Updates tools are not selected</summary>
+          <p>Make the user prompt explicit: mention Microsoft 365 Roadmap, Azure Updates, GA dates, previews, or retirements.</p>
+        </details>
+        <details>
+          <summary>Work IQ Copilot returns little context</summary>
+          <p>Make sure the demo user has relevant and accessible email, meeting, and Teams activity. Work IQ Copilot is permission-bound.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Admin Workshop | Roadmap Concierge</p>
+    <p><a href="copilot-page.md">Open the Copilot Page-friendly version</a></p>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script src="assets/script.js"></script>
+</body>
+</html>
