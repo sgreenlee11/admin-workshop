@@ -94,9 +94,14 @@
           <h3>Copilot Studio environment</h3>
           <p>Use a Developer or Sandbox environment. Avoid the default environment if DLP policies block custom connectors or MCP tools.</p>
         </article>
-        <article class="card">
-          <h3>Enterprise MCP setup</h3>
-          <p>Complete the Copilot Studio-specific setup in <em>Use Microsoft MCP Server for Enterprise from Copilot Studio</em>.</p>
+        <article class="card important">
+          <h3>⚠️ Enterprise MCP setup (critical pre-requisite)</h3>
+          <p><strong>You must complete the pre-requisite steps before the workshop.</strong> The Enterprise MCP server requires an Entra app registration, API permissions with admin consent, and PowerShell provisioning that cannot be done live in a few minutes.</p>
+          <p>Follow both guides in order:</p>
+          <ol>
+            <li><a href="https://learn.microsoft.com/en-us/graph/mcp-server/get-started" target="_blank" rel="noreferrer">Get started with the Microsoft MCP Server for Enterprise</a> — PowerShell provisioning and app registration.</li>
+            <li><a href="https://learn.microsoft.com/en-us/graph/mcp-server/use-enterprise-mcp-server-copilot-studio" target="_blank" rel="noreferrer">Use Microsoft MCP Server for Enterprise from Copilot Studio</a> — OAuth connector and federated credential setup.</li>
+          </ol>
         </article>
         <article class="card">
           <h3>Admin and app registration</h3>
@@ -236,6 +241,7 @@ STYLE
         <li class="step">
           <h3>Add the Microsoft MCP Server for Enterprise</h3>
           <p>This server provides read-only Microsoft Graph access through the signed-in user's permissions.</p>
+          <p class="note important">⚠️ <strong>Pre-requisite:</strong> You must have already completed the <a href="https://learn.microsoft.com/en-us/graph/mcp-server/get-started" target="_blank" rel="noreferrer">Get started</a> guide (PowerShell provisioning + app registration) before proceeding. If you haven't, stop here and complete it first.</p>
           <ol>
             <li>In Copilot Studio, add a new MCP tool.</li>
             <li>Set the server URL to <code>https://mcp.svc.cloud.microsoft/enterprise</code>.</li>
@@ -246,6 +252,7 @@ STYLE
             <li>Create and test the connection, then return to Copilot Studio and select <strong>Add and configure</strong>.</li>
           </ol>
           <p class="note">If the connector test fails after adding federated credentials, verify the issuer, subject, and credential name match the connector values exactly.</p>
+          <p class="note">Full walkthrough: <a href="https://learn.microsoft.com/en-us/graph/mcp-server/use-enterprise-mcp-server-copilot-studio" target="_blank" rel="noreferrer">Use Microsoft MCP Server for Enterprise from Copilot Studio</a></p>
         </li>
 
         <li class="step">
